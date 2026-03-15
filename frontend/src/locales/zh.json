@@ -212,7 +212,10 @@
     "maximizeTitle": "最大化/还原",
     "updatingMemory": "GraphRAG长短期记忆实时更新中",
     "updatingRealtime": "实时更新中...",
-    "processingHint": "还有少量内容处理中，建议稍后手动刷新图谱"
+    "processingHint": "还有少量内容处理中，建议稍后手动刷新图谱",
+    "closeHint": "关闭提示",
+    "loadingData": "图谱数据加载中...",
+    "awaitingOntology": "等待本体生成..."
   },
   "history": {
     "title": "推演记录",

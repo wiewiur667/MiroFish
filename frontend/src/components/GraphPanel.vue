@@ -40,7 +40,7 @@
             </svg>
           </div>
           <span class="hint-text">{{ $t('graph.processingHint') }}</span>
-          <button class="hint-close-btn" @click="dismissFinishedHint" title="Close hint">
+          <button class="hint-close-btn" @click="dismissFinishedHint" :title="$t('graph.closeHint')">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -203,13 +203,13 @@
       <!-- Loading state -->
       <div v-else-if="loading" class="graph-state">
         <div class="loading-spinner"></div>
-        <p>Loading graph data...</p>
+        <p>{{ $t('graph.loadingData') }}</p>
       </div>
       
       <!-- Waiting/empty state -->
       <div v-else class="graph-state">
         <div class="empty-icon">❖</div>
-        <p class="empty-text">Awaiting ontology generation...</p>
+        <p class="empty-text">{{ $t('graph.awaitingOntology') }}</p>
       </div>
     </div>
 

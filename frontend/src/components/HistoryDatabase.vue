@@ -167,7 +167,7 @@
               >
                 <span class="btn-step">Step2</span>
                 <span class="btn-icon">◈</span>
-                <span class="btn-text">Env Setup</span>
+                <span class="btn-text">{{ $t('history.envSetupTitle') }}</span>
               </button>
               <button 
                 class="modal-btn btn-report" 
@@ -176,7 +176,7 @@
               >
                 <span class="btn-step">Step4</span>
                 <span class="btn-icon">◆</span>
-                <span class="btn-text">Analysis Report</span>
+                <span class="btn-text">{{ $t('history.reportTitle') }}</span>
               </button>
             </div>
             <!-- Non-replayable hint -->

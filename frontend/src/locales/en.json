@@ -8,7 +8,13 @@
     "workbench": "Workbench"
   },
   "steps": {
-    "names": ["Graph Build", "Env Setup", "Simulation", "Report", "Interaction"],
+    "names": [
+      "Graph Build",
+      "Env Setup",
+      "Simulation",
+      "Report",
+      "Interaction"
+    ],
     "step1": "Graph Build",
     "step2": "Env Setup",
     "step3": "Simulation",
@@ -206,7 +212,10 @@
     "maximizeTitle": "Maximize/Restore",
     "updatingMemory": "GraphRAG short/long-term memory updating in real time",
     "updatingRealtime": "Updating in real time...",
-    "processingHint": "A small amount of content is still processing. Consider refreshing manually."
+    "processingHint": "A small amount of content is still processing. Consider refreshing manually.",
+    "closeHint": "Close hint",
+    "loadingData": "Loading graph data...",
+    "awaitingOntology": "Awaiting ontology generation..."
   },
   "history": {
     "title": "Simulation History",
