@@ -13,7 +13,7 @@
     <!-- Title Section -->
     <div class="section-header">
       <div class="section-line"></div>
-      <span class="section-title">Simulation History</span>
+      <span class="section-title">{{ $t('history.title') }}</span>
       <div class="section-line"></div>
     </div>
 
@@ -36,16 +36,16 @@
             <span 
               class="status-icon" 
               :class="{ available: project.project_id, unavailable: !project.project_id }"
-              title="Graph Build"
+              :title="$t('history.graphBuildTitle')"
             >◇</span>
             <span 
               class="status-icon available" 
-              title="Environment Setup"
+              :title="$t('history.envSetupTitle')"
             >◈</span>
             <span 
               class="status-icon" 
               :class="{ available: project.report_id, unavailable: !project.report_id }"
-              title="Analysis Report"
+              :title="$t('history.reportTitle')"
             >◆</span>
           </div>
         </div>
@@ -67,13 +67,13 @@
             </div>
             <!-- Show hint if more files -->
             <div v-if="project.files.length > 3" class="files-more">
-              +{{ project.files.length - 3 }} files
+              +{{ project.files.length - 3 }} {{ $t('history.files') }}
             </div>
           </div>
           <!-- Placeholder when no files -->
           <div class="files-empty" v-else>
             <span class="empty-file-icon">◇</span>
-            <span class="empty-file-text">No files</span>
+            <span class="empty-file-text">{{ $t('history.noFiles') }}</span>
           </div>
         </div>
 
@@ -102,7 +102,7 @@
     <!-- Loading state -->
     <div v-if="loading" class="loading-state">
       <span class="loading-spinner"></span>
-      <span class="loading-text">Loading...</span>
+      <span class="loading-text">{{ $t('history.loading') }}</span>
     </div>
 
     <!-- History playback detail modal -->
@@ -126,13 +126,13 @@
             <div class="modal-body">
               <!-- Simulation requirement -->
               <div class="modal-section">
-                <div class="modal-label">Simulation Requirement</div>
+                <div class="modal-label">{{ $t('history.simRequirement') }}</div>
                 <div class="modal-requirement">{{ selectedProject.simulation_requirement || 'None' }}</div>
               </div>
 
               <!-- File list -->
               <div class="modal-section">
-                <div class="modal-label">File List</div>
+                <div class="modal-label">{{ $t('history.fileList') }}</div>
                 <div class="modal-files" v-if="selectedProject.files && selectedProject.files.length > 0">
                   <div v-for="(file, index) in selectedProject.files" :key="index" class="modal-file-item">
                     <span class="file-tag" :class="getFileType(file.filename)">{{ getFileTypeLabel(file.filename) }}</span>
@@ -193,7 +193,9 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, onActivated, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { getSimulationHistory } from '../api/simulation'
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()
@@ -443,7 +445,7 @@ const loadHistory = async () => {
       projects.value = response.data || []
     }
   } catch (error) {
-    console.error('Failed to load history projects:', error)
+    console.error(t('history.loadFailed'), error)
     projects.value = []
   } finally {
     loading.value = false
