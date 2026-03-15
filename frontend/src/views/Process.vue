@@ -6,8 +6,8 @@
       
       <!-- 中间步骤指示器 -->
       <div class="nav-center">
-        <div class="step-badge">STEP 01</div>
-        <div class="step-name">图谱构建</div>
+        <div class="step-badge">{{ $t('process.step01') }}</div>
+        <div class="step-name">{{ $t('process.graphBuild') }}</div>
       </div>
 
       <div class="nav-status">
@@ -23,20 +23,20 @@
         <div class="panel-header">
           <div class="header-left">
             <span class="header-deco">◆</span>
-            <span class="header-title">实时知识图谱</span>
+            <span class="header-title">{{ $t('process.liveGraph') }}</span>
           </div>
           <div class="header-right">
             <template v-if="graphData">
-              <span class="stat-item">{{ graphData.node_count || graphData.nodes?.length || 0 }} 节点</span>
+              <span class="stat-item">{{ graphData.node_count || graphData.nodes?.length || 0 }} {{ $t('process.nodes') }}</span>
               <span class="stat-divider">|</span>
-              <span class="stat-item">{{ graphData.edge_count || graphData.edges?.length || 0 }} 关系</span>
+              <span class="stat-item">{{ graphData.edge_count || graphData.edges?.length || 0 }} {{ $t('process.edges') }}</span>
               <span class="stat-divider">|</span>
             </template>
             <div class="action-buttons">
-                <button class="action-btn" @click="refreshGraph" :disabled="graphLoading" title="刷新图谱">
+                <button class="action-btn" @click="refreshGraph" :disabled="graphLoading" :title="$t('process.refreshGraph')">
                   <span class="icon-refresh" :class="{ 'spinning': graphLoading }">↻</span>
                 </button>
-                <button class="action-btn" @click="toggleFullScreen" :title="isFullScreen ? '退出全屏' : '全屏显示'">
+                <button class="action-btn" @click="toggleFullScreen" :title="isFullScreen ? $t('process.exitFullscreen') : $t('process.fullscreen')">
                   <span class="icon-fullscreen">{{ isFullScreen ? '↙' : '↗' }}</span>
                 </button>
             </div>
@@ -50,7 +50,7 @@
             <!-- 构建中提示 -->
             <div v-if="currentPhase === 1" class="graph-building-hint">
               <span class="building-dot"></span>
-              实时更新中...
+              {{ $t('process.buildingGraph') }}
             </div>
             
             <!-- 节点/边详情面板 -->
@@ -171,7 +171,7 @@
               <div class="loading-ring"></div>
               <div class="loading-ring"></div>
             </div>
-            <p class="loading-text">图谱数据加载中...</p>
+            <p class="loading-text">{{ $t('process.loadingGraph') }}</p>
           </div>
           
           <!-- 等待构建 -->
@@ -414,14 +414,14 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { generateOntology, getProject, buildGraph, getTaskStatus, getGraphData } from '../api/graph'
 import { getPendingUpload, clearPendingUpload } from '../store/pendingUpload'
 import * as d3 from 'd3'
 
 const route = useRoute()
 const router = useRouter()
-
-// 当前项目ID（可能从'new'变为实际ID）
+const { t } = useI18n()（可能从'new'变为实际ID）
 const currentProjectId = ref(route.params.projectId)
 
 // 状态
@@ -451,11 +451,11 @@ const statusClass = computed(() => {
 })
 
 const statusText = computed(() => {
-  if (error.value) return '构建失败'
-  if (currentPhase.value >= 2) return '构建完成'
-  if (currentPhase.value === 1) return '图谱构建中'
-  if (currentPhase.value === 0) return '本体生成中'
-  return '初始化中'
+  if (error.value) return t('process.buildFailed')
+  if (currentPhase.value >= 2) return t('process.buildComplete')
+  if (currentPhase.value === 1) return t('process.graphBuilding')
+  if (currentPhase.value === 0) return t('process.ontologyGen')
+  return t('process.initializing')
 })
 
 const entityTypes = computed(() => {

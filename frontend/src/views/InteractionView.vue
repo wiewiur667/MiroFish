@@ -15,7 +15,7 @@
             :class="{ active: viewMode === mode }"
             @click="viewMode = mode"
           >
-            {{ { graph: '图谱', split: '双栏', workbench: '工作台' }[mode] }}
+            {{ { graph: $t('viewModes.graph'), split: $t('viewModes.split'), workbench: $t('viewModes.workbench') }[mode] }}
           </button>
         </div>
       </div>
@@ -23,7 +23,7 @@
       <div class="header-right">
         <div class="workflow-step">
           <span class="step-num">Step 5/5</span>
-          <span class="step-name">深度互动</span>
+          <span class="step-name">{{ $t('steps.step5') }}</span>
         </div>
         <div class="step-divider"></div>
         <span class="status-indicator" :class="statusClass">
@@ -64,6 +64,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import GraphPanel from '../components/GraphPanel.vue'
 import Step5Interaction from '../components/Step5Interaction.vue'
 import { getProject, getGraphData } from '../api/graph'
@@ -72,8 +73,7 @@ import { getReport } from '../api/report'
 
 const route = useRoute()
 const router = useRouter()
-
-// Props
+const { t } = useI18n()
 const props = defineProps({
   reportId: String
 })
@@ -109,10 +109,10 @@ const statusClass = computed(() => {
 })
 
 const statusText = computed(() => {
-  if (currentStatus.value === 'error') return 'Error'
-  if (currentStatus.value === 'completed') return 'Completed'
-  if (currentStatus.value === 'processing') return 'Processing'
-  return 'Ready'
+  if (currentStatus.value === 'error') return t('status.error')
+  if (currentStatus.value === 'completed') return t('status.completed')
+  if (currentStatus.value === 'processing') return t('status.processing')
+  return t('status.ready')
 })
 
 // --- Helpers ---

@@ -15,12 +15,13 @@
             :class="{ active: viewMode === mode }"
             @click="viewMode = mode"
           >
-            {{ { graph: 'Graph', split: 'Split', workbench: 'Workbench' }[mode] }}
+            {{ { graph: $t('viewModes.graph'), split: $t('viewModes.split'), workbench: $t('viewModes.workbench') }[mode] }}
           </button>
         </div>
       </div>
 
       <div class="header-right">
+        <LanguageToggle />
         <div class="workflow-step">
           <span class="step-num">Step {{ currentStep }}/5</span>
           <span class="step-name">{{ stepNames[currentStep - 1] }}</span>
@@ -77,21 +78,24 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import GraphPanel from '../components/GraphPanel.vue'
 import Step1GraphBuild from '../components/Step1GraphBuild.vue'
 import Step2EnvSetup from '../components/Step2EnvSetup.vue'
+import LanguageToggle from '../components/LanguageToggle.vue'
 import { generateOntology, getProject, buildGraph, getTaskStatus, getGraphData } from '../api/graph'
 import { getPendingUpload, clearPendingUpload } from '../store/pendingUpload'
 
 const route = useRoute()
 const router = useRouter()
-
-// Layout State
+const { t } = useI18n()
 const viewMode = ref('split') // graph | split | workbench
 
 // Step State
 const currentStep = ref(1) // 1: Graph Build, 2: Env Setup, 3: Start Simulation, 4: Report, 5: Deep Interaction
-const stepNames = ['Graph Build', 'Env Setup', 'Start Simulation', 'Report', 'Deep Interaction']
+const stepNames = computed(() => [
+  t('steps.step1'), t('steps.step2'), t('steps.step3'), t('steps.step4'), t('steps.step5')
+])
 
 // Data State
 const currentProjectId = ref(route.params.projectId)
@@ -130,11 +134,11 @@ const statusClass = computed(() => {
 })
 
 const statusText = computed(() => {
-  if (error.value) return 'Error'
-  if (currentPhase.value >= 2) return 'Ready'
-  if (currentPhase.value === 1) return 'Building Graph'
-  if (currentPhase.value === 0) return 'Generating Ontology'
-  return 'Initializing'
+  if (error.value) return t('status.error')
+  if (currentPhase.value >= 2) return t('status.ready')
+  if (currentPhase.value === 1) return t('status.buildingGraph')
+  if (currentPhase.value === 0) return t('status.generatingOntology')
+  return t('status.initializing')
 })
 
 // --- Helpers ---
@@ -159,7 +163,7 @@ const toggleMaximize = (target) => {
 const handleNextStep = (params = {}) => {
   if (currentStep.value < 5) {
     currentStep.value++
-    addLog(`Entering Step ${currentStep.value}: ${stepNames[currentStep.value - 1]}`)
+    addLog(`Entering Step ${currentStep.value}: ${stepNames.value[currentStep.value - 1]}`)
     
     // If moving from Step 2 to Step 3, log round config
     if (currentStep.value === 3 && params.maxRounds) {
@@ -171,7 +175,7 @@ const handleNextStep = (params = {}) => {
 const handleGoBack = () => {
   if (currentStep.value > 1) {
     currentStep.value--
-    addLog(`Back to Step ${currentStep.value}: ${stepNames[currentStep.value - 1]}`)
+    addLog(`Back to Step ${currentStep.value}: ${stepNames.value[currentStep.value - 1]}`)
   }
 }
 
